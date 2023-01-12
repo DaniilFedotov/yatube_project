@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+  {{ title }}
+{% endblock title %}
+{% block content %}
+  <div class="container py-5">
+    <h1>Публикации группы "{{ group }}".</h1>
+    {% for post in posts %}
+      <ul>
+        <li>
+          Автор: {{ post.author.get_full_name }}
+        </li>
+        <li>
+          Дата публикации: {{ post.pub_date|date:"d E Y" }}
+        </li>
+      </ul>
+      <p>{{ post.text }}</p>
+      {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+  </div>
+{% endblock content %}
+{% block footer %}
+  <footer class="page-footer font-small blue border-top">
+    <div class="footer-copyright text-center py-3">© 2020 Copyright
+      <p><span style="color:red">Ya</span>tube</p>
+    </div>
+  </footer>
+{% endblock footer %}

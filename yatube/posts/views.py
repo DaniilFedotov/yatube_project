@@ -1,9 +1,24 @@
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Post, Group
 
 
 def index(request):
-    return HttpResponse('Главная страница новейшего веб-приложения!')
+    posts = Post.objects.order_by('-pub_date')[:10]
+    template = 'posts/index.html'
+    context = {
+        'title': 'Последние обновления на сайте',
+        'posts': posts,
+    }
+    return render(request, template, context)
 
 
-def group_posts(request, any_slug):
-    return HttpResponse(f'Вы ввели в адресную строку что-то странное: {any_slug}')
+def group_posts(request, slug):
+    template = 'posts/group_list.html'
+    group = get_object_or_404(Group, slug=slug)
+    posts = Post.objects.filter(group=group).order_by('-pub_date')[:10]
+    context = {
+        'title': f'Записи сообщества {group}',
+        'group': group,
+        'posts': posts,
+    }
+    return render(request, template, context)
